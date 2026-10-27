@@ -1,8 +1,10 @@
 package ru.yandex.practicum.sleeptracker;
 
 import org.junit.jupiter.api.Test;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SleepAnalysisTest {
@@ -15,35 +17,54 @@ class SleepAnalysisTest {
             session("2025-10-02T23:00", "2025-10-03T06:00", SleepQuality.BAD),
             session("2025-10-03T14:00", "2025-10-03T14:31", SleepQuality.NORMAL));
 
-    @Test void countsAllSessions() {
+    @Test
+    void countsAllSessions() {
         assertEquals(3L, new SessionCountAnalysis().apply(sample).value());
     }
-    @Test void countsEmptyLog() {
+
+    @Test
+    void countsEmptyLog() {
         assertEquals(0L, new SessionCountAnalysis().apply(List.of()).value());
     }
-    @Test void findsMinimumIncludingDaytimeSleep() {
+
+    @Test
+    void findsMinimumIncludingDaytimeSleep() {
         assertEquals(31L, new MinimumDurationAnalysis().apply(sample).value());
     }
-    @Test void minimumForEmptyLogIsZero() {
+
+    @Test
+    void minimumForEmptyLogIsZero() {
         assertEquals(0L, new MinimumDurationAnalysis().apply(List.of()).value());
     }
-    @Test void findsMaximumAcrossMidnight() {
+
+    @Test
+    void findsMaximumAcrossMidnight() {
         assertEquals(480L, new MaximumDurationAnalysis().apply(sample).value());
     }
-    @Test void maximumForEmptyLogIsZero() {
+
+    @Test
+    void maximumForEmptyLogIsZero() {
         assertEquals(0L, new MaximumDurationAnalysis().apply(List.of()).value());
     }
-    @Test void averageKeepsFractionalMinutes() {
+
+    @Test
+    void averageKeepsFractionalMinutes() {
         double average = (double) new AverageDurationAnalysis().apply(sample).value();
         assertEquals(931.0 / 3, average, 0.000001);
     }
-    @Test void averageForEmptyLogIsZero() {
+
+    @Test
+    void averageForEmptyLogIsZero() {
         assertEquals(0.0, new AverageDurationAnalysis().apply(List.of()).value());
     }
-    @Test void countsOnlyBadSessions() {
+
+    @Test
+    void countsOnlyBadSessions() {
         assertEquals(1L, new BadQualityCountAnalysis().apply(sample).value());
     }
-    @Test void countsNoBadSessionsInEmptyLog() {
+
+    @Test
+    void countsNoBadSessionsInEmptyLog() {
         assertEquals(0L, new BadQualityCountAnalysis().apply(List.of()).value());
     }
 }
