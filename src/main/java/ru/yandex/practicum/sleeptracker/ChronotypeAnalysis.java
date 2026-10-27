@@ -3,7 +3,6 @@ package ru.yandex.practicum.sleeptracker;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class ChronotypeAnalysis implements Function<List<SleepingSession>, SleepAnalysisResult> {
     @Override
