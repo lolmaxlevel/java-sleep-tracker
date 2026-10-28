@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.function.Function;
 
 public class ChronotypeAnalysis implements Function<List<SleepingSession>, SleepAnalysisResult> {
+    private static final LocalTime ELEVEN_PM = LocalTime.of(23, 0);
+    private static final LocalTime NINE_AM = LocalTime.of(9, 0);
+    private static final LocalTime TEN_PM = LocalTime.of(22, 0);
+    private static final LocalTime SEVEN_AM = LocalTime.of(7, 0);
+
     @Override
     public SleepAnalysisResult apply(List<SleepingSession> sessions) {
         List<Chronotype> types = NightSleep.getNights(sessions).stream()
@@ -30,12 +35,12 @@ public class ChronotypeAnalysis implements Function<List<SleepingSession>, Sleep
         LocalTime start = night.getFirst().start().toLocalTime();
         LocalTime end = night.getLast().end().toLocalTime();
 
-        boolean lateStart = start.isAfter(LocalTime.of(23, 0)) || start.isBefore(LocalTime.NOON);
-        if (lateStart && end.isAfter(LocalTime.of(9, 0))) {
+        boolean lateStart = start.isAfter(ELEVEN_PM) || start.isBefore(LocalTime.NOON);
+        if (lateStart && end.isAfter(NINE_AM)) {
             return Chronotype.OWL;
         }
-        if (!start.isBefore(LocalTime.NOON) && start.isBefore(LocalTime.of(22, 0))
-                && end.isBefore(LocalTime.of(7, 0))) {
+        if (!start.isBefore(LocalTime.NOON) && start.isBefore(TEN_PM)
+                && end.isBefore(SEVEN_AM)) {
             return Chronotype.LARK;
         }
         return Chronotype.DOVE;
